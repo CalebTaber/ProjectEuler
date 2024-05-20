@@ -22,7 +22,28 @@ public class Problem0008 {
                         "05886116467109405077541002256983155200055935729725" +
                         "71636269561882670428252483600823257530420752963450";
 
-        
+
+        System.out.println(findLargestProductOfNConsecutiveDigits(number, 13));
+        // Find string of 13 adjacent digits with largest product
+        // If it contains 0, ignore
+        // How to characterize maximum string?
+        // Regex?
+    }
+
+    private static long findLargestProductOfNConsecutiveDigits(String number, int consecutiveDigits) {
+        long largestProduct = 0;
+        for (int i = 0; i < number.length() - consecutiveDigits; i++) {
+            String currentSubstring = number.substring(i, i + consecutiveDigits);
+
+            long product = 1;
+            for (int j = 0; j < currentSubstring.length(); j++) {
+                product *= (currentSubstring.charAt(j) - 48);
+            }
+
+            if (product > largestProduct) largestProduct = product;
+        }
+
+        return largestProduct;
     }
 
 
