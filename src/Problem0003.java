@@ -1,55 +1,51 @@
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class Problem0003 {
-//
-//    public static void main(String[] args) {
-//       long num = 600851475143L;
-//       System.out.println(pollardsRho(3));
-//    }
-//
-//    private static List<Integer> findPrimeFactors(long intToFactor) {
-//        List<Integer> primeFactors = new ArrayList<>();
-//
-//
-//
-//        return primeFactors;
-//    }
-//
-//    private static boolean isPrime(long x)
-//
-//    private static long pollardsRho(long intToFactor) {
-//        long x = 2;
-//        long y = x;
-//        long d = 1;
-//
-//        while (d == 1) {
-//            x = pollardsRho_g(intToFactor, x);
-//            y = pollardsRho_g(intToFactor, pollardsRho_g(intToFactor, y));
-//            d = gcd(Math.abs(x - y), intToFactor);
-//        }
-//
-//        if (d == intToFactor) {
-//            return -1;
-//        }
-//        else return d;
-//    }
-//
-//    private static long pollardsRho_g(long intToFactor, long x) {
-//        return (long) (Math.pow(x, 2) - 1) % intToFactor;
-//    }
-//
-//    private static long gcd(long x, long y) {
-//        long a = x;
-//        long b = y;
-//
-//        while (b != 0) {
-//            long t = b;
-//            b = a % b;
-//            a = t;
-//        }
-//
-//        return a;
-//    }
-//
-//}
+import java.util.ArrayList;
+import java.util.List;
+
+public class Problem0003 {
+
+    public static void main(String[] args) {
+       long num = 600851475143L;
+       int sqrtOfNum = (int) Math.ceil(Math.sqrt(num));
+       List<Integer> primes = sieveOfEratosthenes(sqrtOfNum);
+
+       for (int i = primes.size() - 1; i >= 0; i--) {
+           int currentPrime = primes.get(i);
+           if (num % currentPrime == 0) {
+               System.out.println(currentPrime);
+               break;
+           }
+       }
+    }
+
+    /**
+     * Use the Sieve of Eratosthenes to generate primes on the interval [1, generationLimit]
+     */
+    private static List<Integer> sieveOfEratosthenes(int generationLimit) {
+        List<Integer> primes = new ArrayList<>();
+
+        // Array representing integers 1...generationLimit
+        // true == composite, false == unmarked
+        boolean[] sieve = new boolean[generationLimit];
+        sieve[0] = true;
+
+        int p = 1; // Index of the next prime number, starting at 1 (num = 2)
+        do {
+            primes.add(p + 1);
+
+            // Mark off multiples of p+1 (the value represented by the index p)
+            for (int i = p; i < sieve.length; i += p + 1) {
+                sieve[i] = true;
+            }
+
+            // Find smallest unmarked index
+            for (int i = p + 1; i < sieve.length; i++) {
+                if (!sieve[i]) {
+                    p = i;
+                    break;
+                }
+            }
+        } while (!sieve[p]);
+
+        return primes;
+    }
+}
